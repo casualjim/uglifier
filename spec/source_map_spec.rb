@@ -3,9 +3,8 @@ require 'stringio'
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 def expect_to_have_inline_source_map(minified, original)
-  options = { :source_map => { :sources_content => true } }
-  _, map = Uglifier.compile_with_map(minified, options)
-  expect(JSON.load(map).fetch("sourcesContent", [])).to include(original)
+  _, map = Uglifier.compile_with_map(minified)
+  expect(JSON.load(map)["sourcesContent"]).to include(original)
 end
 
 describe "Uglifier" do
@@ -102,9 +101,9 @@ describe "Uglifier" do
     expect(minified1.lines.to_a.length).to eq(1)
 
     map = SourceMap::Map.from_json(map2)
-    expect(map.sources).to eq(["http://localhost/ahoy.js"])
+    expect(map.sources).to eq(["ahoy.js", "http://localhost/ahoy.js"])
     expect(map[0].generated.line).to eq(1)
-    expect(map[-1].original.line).to eq(1)
+    expect(map[-1].original.line).to eq(6)
   end
 
   it "handles empty string as input map sourceRoot" do
