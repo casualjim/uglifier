@@ -16,10 +16,6 @@ class Uglifier
   HarmonySourcePath = File.expand_path("../uglify-harmony.js", __FILE__)
   # Source Map path
   SourceMapPath = File.expand_path("../source-map.js", __FILE__)
-  # ES5 shims source path
-  ES5FallbackPath = File.expand_path("../es5.js", __FILE__)
-  # String.split shim source path
-  SplitFallbackPath = File.expand_path("../split.js", __FILE__)
   # UglifyJS wrapper path
   UglifyJSWrapperPath = File.expand_path("../uglifier.js", __FILE__)
 
@@ -170,7 +166,7 @@ class Uglifier
   private
 
   def source_with(path)
-    [ES5FallbackPath, SplitFallbackPath, SourceMapPath, path,
+    [SourceMapPath, path,
      UglifyJSWrapperPath].map do |file|
       File.open(file, "r:UTF-8", &:read)
     end.join("\n")
